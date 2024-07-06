@@ -10,8 +10,8 @@ use ieee.std_logic_1164.all;
 entity Datapath is
 	port(
 			-- Inputs de periféricos externos
-			clk, ME, EE				: in std_logic;
-			P, N, PS				: in std_logic_vector(1 downto 0);
+			clk, ME, EE				: in std_logic;					-- 1 bit: ME = molho extra, EE = enxague extra
+			P, N, PS				: in std_logic_vector(1 downto 0);		-- 2 bits: P = programa, N = nivel d'agua, PS = pressostato (peso do tanque)
 			DATA_FLASH				: in std_logic_vector(31 downto 0);
 			-- Inputs que vem da controladora
 			load_selection				: in std_logic;
@@ -56,9 +56,9 @@ architecture RTL of Datapath is
 			DATA_WIDTH : natural := 4
 		);
 		Port( 
-			clock, reset, load : in std_logic;
-			D					 : in std_logic_vector(DATA_WIDTH - 1 downto 0);
-			Q					 : out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
+			clock, reset, load 			: in std_logic;
+			D					: in std_logic_vector(DATA_WIDTH - 1 downto 0);
+			Q					: out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
 		);
 	end component;
 	
@@ -77,8 +77,8 @@ architecture RTL of Datapath is
 			DATA_WIDTH : natural := 8
 		);
 		Port (
-			A					 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-			A_Eq_0 : out std_logic
+			A					: in std_logic_vector(DATA_WIDTH-1 downto 0);
+			A_Eq_0 					: out std_logic
 		);
 	end component;
 	
@@ -192,20 +192,20 @@ architecture RTL of Datapath is
 	signal out1_Conversor_3, out2_Conversor_3 		: std_logic_vector(3 downto 0);
 
 	-- Sinal auxiliar saída "timer" para o temporizador 
-	signal out_timer : std_logic_vector(5 downto 0);
+	signal out_timer 					: std_logic_vector(5 downto 0);
 
 	-- Sinais auxiliares para display 7 segmentos
-	signal NM_BCD, NE_BCD : std_logic_vector(3 downto 0);
+	signal NM_BCD, NE_BCD 					: std_logic_vector(3 downto 0);
 	
 	begin
 	-- Atribuição do barramento de 32 bits da memória para os registradores correspondentes
-	TL 							<= DATA_FLASH(5 downto 0);
-	TE 							<= DATA_FLASH(11 downto 6);
-	TM 							<= DATA_FLASH(17 downto 12);
-	TC 							<= DATA_FLASH(23 downto 18);
-	NM 							<= DATA_FLASH(25 downto 24);
-	NE							<= DATA_FLASH(27 downto 26);
-	num_etapas 						<= DATA_FLASH(31 downto 28);
+	TL 							<= DATA_FLASH(5 downto 0);			-- TL = tempo total de lavagem
+	TE 							<= DATA_FLASH(11 downto 6);			-- TE = tempo de enxague
+	TM 							<= DATA_FLASH(17 downto 12);			-- TM = tempo de molho
+	TC 							<= DATA_FLASH(23 downto 18);			-- TC = tempo de centrifugacao
+	NM 							<= DATA_FLASH(25 downto 24);			-- NM = numero de molhos
+	NE							<= DATA_FLASH(27 downto 26);			-- NE = numero de enxagues
+	num_etapas 						<= DATA_FLASH(31 downto 28);			-- numero total de etapas
 
 	-- Agrupando std_logic para std_logic_vector
 	MOTOR_in 						<= (alta_rot_motor & baixa_rot_motor & rot_anti_hor & rot_horaria);
