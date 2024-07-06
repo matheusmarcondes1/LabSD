@@ -1,5 +1,7 @@
-//trabalho final dig-elt029 ufmg: rtl design de um sistema de controle de lavadora automatica de roupas
-//authors: breno augusto e gabriel groppo @ escola de engenharia ufmg
+--trabalho final dig-elt029 ufmg
+--rtl design: implementação de um sistema de controle de lavadora automatica de roupas
+--autoria: breno augusto e gabriel groppo @ escola de engenharia ufmg
+-- DATAPATH
 
 
 LIBRARY IEEE;
